@@ -1,17 +1,27 @@
-# TestMaster - Spring Boot Testing Demo
+# Spring Boot Testing Guide
 
 ## Overview
 
-This project demonstrates the use of various testing techniques in a Spring Boot application. It focuses on unit testing, integration testing, and in-memory testing using JUnit and Mockito.
+This project serves as a comprehensive guide to implementing various testing techniques in a Spring Boot application. It covers unit testing, integration testing, and in-memory testing using JUnit and Mockito.
 
 ## Technologies and Components
 
 ### 1. JUnit
 
-- **Overview**: JUnit is a popular testing framework for Java that allows you to write and run tests.
-- **Usage**: It provides annotations like `@Test`, `@BeforeEach`, and `@AfterEach` to define test methods and lifecycle hooks.
+- **Overview**: JUnit is a widely used framework for writing and running tests in Java applications.
+- **Common Annotations**:
+  - `@Test`: Marks a method as a test case.
+  - `@BeforeEach`: Runs before each test method; useful for setup.
+  - `@AfterEach`: Runs after each test method; useful for cleanup.
+  - `@BeforeAll`: Runs once before all tests in the class.
+  - `@AfterAll`: Runs once after all tests in the class.
 - **Example**:
   ```java
+  @BeforeEach
+  void setup() {
+      // Initialization code here
+  }
+
   @Test
   void testMethod() {
       // Test logic here
@@ -19,26 +29,43 @@ This project demonstrates the use of various testing techniques in a Spring Boot
 
 ### 2. Mockito
 
-- **Overview**: Mockito is a mocking framework that allows you to create mock objects for your tests. It is commonly used to isolate the component being tested.
-- **Usage**: You can use annotations like `@Mock` to create mock instances and `@InjectMocks` to inject them into the class under test.
+- **Overview**: Mockito is a mocking framework that allows you to create mock objects for your tests.
+
+- **Common Annotations**:
+  - `@Mock`: Creates a mock instance of the class.
+  - `@InjectMocks`: Injects mock instances into the class under test.
+  - `@ExtendWith(MockitoExtension.class)`: Enables Mockito in JUnit 5 tests.
+
 - **Key Methods**:
-  - `when(...)`: Specifies the behavior of a mock object.
-  - `verify(...)`: Checks if a method was called on a mock.
+  - `when(...)`: Specifies the behavior of a mock.
+  - `verify(...)`: Confirms that a method was called on a mock.
+  - `doNothing()`, `doThrow()`: Control the behavior of void methods.
+
 - **Example**:
   ```java
-  @Mock
-  private TaskService taskService;
+  import static org.mockito.Mockito.*;
 
-  @Test
-  void testServiceMethod() {
-      when(taskService.getTaskById(1L)).thenReturn(new Task());
-      // Assertions here
+  public class TaskServiceTest {
+      @Mock
+      private TaskService taskService;
+
+      @InjectMocks
+      private TaskController taskController;
+
+      @Test
+      void testServiceMethod() {
+          when(taskService.getTaskById(1L)).thenReturn(new Task());
+          // Assertions here
+          verify(taskService).getTaskById(1L);
+      }
   }
 
 ### 3. In-Memory Testing with H2
 
-- **Overview**: In-memory testing uses an in-memory database (like H2) to run integration tests without needing a real database. It is useful for testing data access layers.
-- **Usage**: Configure H2 in the application properties for testing. Spring Boot will automatically use this configuration during tests.
+- **Overview**: In-memory testing uses an in-memory database (like H2) for running integration tests without a real database. This approach is useful for testing data access layers while keeping the tests fast and isolated.
+
+- **Usage**: Configure H2 in the application properties for testing purposes. Spring Boot will automatically use this configuration during tests.
+
 - **Example Configuration**:
   ```properties
   spring.datasource.url=jdbc:h2:mem:testdb
@@ -47,14 +74,14 @@ This project demonstrates the use of various testing techniques in a Spring Boot
   spring.datasource.password=password
   spring.jpa.hibernate.ddl-auto=create-drop
 
-### Testing Strategies
+## Testing Strategies
 
-- **Unit Testing**: Focus on testing individual methods or components, typically using Mockito to mock dependencies.
-- **Integration Testing**: Tests multiple components together, using a real or in-memory database to validate interactions.
-- **End-to-End Testing**: Tests the complete flow of the application, including controllers and services.
+- **Unit Testing**: Focus on testing individual methods or components. Use Mockito to mock dependencies and isolate the unit of work.
 
+- **Integration Testing**: Tests multiple components together, typically using a real or in-memory database to validate interactions.
 
-### Conclusion
+- **End-to-End Testing**: Tests the complete flow of the application, including controllers, services, and repositories.
 
-This project serves as a practical guide to understanding how to implement and utilize JUnit, Mockito, and in-memory testing with Spring Boot. These tools help ensure code quality and reliability through effective testing strategies.
+## Conclusion
 
+This guide provides a practical overview of how to implement and utilize JUnit, Mockito, and in-memory testing in Spring Boot. Understanding these concepts enhances code quality and reliability through effective testing strategies.
