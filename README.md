@@ -1,8 +1,40 @@
 # Spring Boot Testing Guide
 
-## Overview
+## Project Overview
 
-This project serves as a comprehensive guide to implementing various testing techniques in a Spring Boot application. It covers unit testing, integration testing, and in-memory testing using JUnit and Mockito.
+This project is designed to demonstrate effective testing strategies in a Spring Boot application. It showcases various testing techniques, including unit testing, integration testing, and in-memory testing using JUnit and Mockito.
+
+### Project Structure
+
+- **src/main/java**: Contains the main application code, including controllers, services, and models.
+- **src/test/java**: Contains test classes that demonstrate different types of tests.
+  - **unit**: Contains unit tests focusing on individual components using Mockito.
+  - **integration**: Contains integration tests validating the interaction between multiple components and using an in-memory database (H2).
+
+### Key Annotations and Their Purpose
+
+- **`@SpringBootTest`**: 
+  - Used for integration testing in Spring Boot.
+  - Loads the complete application context, allowing tests to run with the actual Spring application setup.
+  - Enables testing of how different components interact with each other.
+
+- **`@WebMvcTest`**:
+  - Used to test Spring MVC controllers.
+  - Configures the application context with only the components necessary for testing a specific controller.
+  - Automatically configures MockMvc to simulate HTTP requests.
+
+- **`@DataJpaTest`**:
+  - Used to test JPA repositories.
+  - Configures an in-memory database and scans for `@Entity` classes and Spring Data JPA repositories.
+  - Useful for testing the data access layer without needing a full application context.
+
+- **`@MockBean`**:
+  - Used to create and inject mock objects into the Spring application context.
+  - Useful for isolating the component under test by mocking its dependencies.
+
+### Why This Project?
+
+This project serves as a practical guide to understanding how to implement and utilize JUnit and Mockito effectively. By incorporating in-memory testing with H2, it demonstrates how to validate data access layers without relying on an external database. The focus on various testing strategies aims to improve code quality and reliability, making it easier to maintain and extend the application in the future.
 
 ## Technologies and Components
 
